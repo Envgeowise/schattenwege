@@ -1,336 +1,173 @@
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>Schattenwege</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ENVGEOWISE</title>
+<meta name="description" content="ENVGEOWISE — geodatenbasierte Plattform für Klimaanpassung in Städten.">
 <style>
-  /* Layout concept: sticky app header, full-bleed schematic street map as the hero interaction,
-     a details/legend rail beside it on wide screens and stacked below on phones. */
-  :root{
-    --bg:#f3f6ee; --surface:#ffffff; --surface-2:#eef2e6; --fg:#1b2419; --muted:#5a6a54;
-    --accent:#2d4a2a; --accent-2:#5c7a4e; --warm:#c0532f; --border:#dbe3cf; --chip:#e3ecd8;
-    color-scheme: light;
+  :root {
+    --bg: #f6f8f1;
+    --surface: #ffffff;
+    --fg: #1f3320;
+    --muted: #5a6a54;
+    --accent: #2d4a2a;
+    --accent-soft: #eef2e6;
+    --border: #d9e2cf;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#111a10; --surface:#182319; --surface-2:#1e2b1d; --fg:#e8efe1; --muted:#a2b398;
-      --accent:#8ec078; --accent-2:#6f9460; --warm:#e8926a; --border:#2b3a28; --chip:#243424;
-      color-scheme: dark;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10160f;
+      --surface: #182018;
+      --fg: #e7eee2;
+      --muted: #a7b39e;
+      --accent: #8fc97f;
+      --accent-soft: #1f2a1e;
+      --border: #2a362a;
     }
   }
-  :root[data-theme="dark"]{
-    --bg:#111a10; --surface:#182319; --surface-2:#1e2b1d; --fg:#e8efe1; --muted:#a2b398;
-    --accent:#8ec078; --accent-2:#6f9460; --warm:#e8926a; --border:#2b3a28; --chip:#243424;
-    color-scheme: dark;
+  :root[data-theme="dark"] {
+    --bg: #10160f;
+    --surface: #182018;
+    --fg: #e7eee2;
+    --muted: #a7b39e;
+    --accent: #8fc97f;
+    --accent-soft: #1f2a1e;
+    --border: #2a362a;
   }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--fg);
-    font-family:'Inter',system-ui,sans-serif;
-    padding-left:max(16px, env(safe-area-inset-left,0px));
-    padding-right:max(16px, env(safe-area-inset-right,0px));
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
   }
-  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);}
-  h1,h2,h3{font-family:'Lora',Georgia,serif; margin:0; text-wrap:balance;}
-  .wrap{max-width:1080px; margin:0 auto;}
-
-  header{
-    position:sticky; top:env(safe-area-inset-top,0px); z-index:10;
-    background:var(--surface); border-bottom:1px solid var(--border);
-    padding-block:12px; margin-inline:calc(-1 * max(16px, env(safe-area-inset-left,0px))) calc(-1 * max(16px, env(safe-area-inset-right,0px)));
-    padding-inline:max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px));
+  header {
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
   }
-  .header-inner{max-width:1080px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
-  .brandblock{display:flex; align-items:center; gap:10px;}
-  .logo{
-    width:34px; height:34px; border-radius:9px; background:var(--accent); color:var(--surface);
-    display:flex; align-items:center; justify-content:center; font-family:'Lora',serif; font-weight:600; font-size:16px; flex-shrink:0;
+  .logo {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px;
+    flex-shrink: 0;
   }
-  .brandtext .eyebrow{font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); font-weight:600;}
-  .brandtext h1{font-size:19px; color:var(--fg);}
-  .controls{display:flex; gap:8px; flex-wrap:wrap;}
-  button.ctrl{
-    font:inherit; font-size:12.5px; font-weight:600; color:var(--accent); background:var(--chip);
-    border:1px solid var(--border); border-radius:20px; padding:8px 13px; cursor:pointer;
-    display:flex; align-items:center; gap:6px;
+  header .name { font-weight: 700; font-size: 18px; letter-spacing: 0.3px; }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
   }
-  button.ctrl[aria-pressed="true"]{ background:var(--accent); color:var(--surface); border-color:var(--accent);}
-  button.ctrl:focus-visible{ outline:2px solid var(--accent); outline-offset:2px;}
-
-  main{padding-block:20px 48px;}
-  .intro{max-width:620px; margin-bottom:22px;}
-  .intro .eyebrow{font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent-2); font-weight:700; margin-bottom:6px;}
-  .intro h2{font-size:26px; margin-bottom:8px;}
-  .intro p{color:var(--muted); font-size:14.5px; line-height:1.55; margin:0;}
-
-  .app-grid{display:grid; grid-template-columns: 1.55fr 1fr; gap:18px; align-items:start;}
-  @media (max-width: 760px){ .app-grid{grid-template-columns:1fr;} }
-
-  .panel{background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden;}
-  .map-panel .map-head{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); gap:10px; flex-wrap:wrap;}
-  .map-head h3{font-size:15px;}
-  .heat-toggle{
-    display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600; color:var(--muted); cursor:pointer; user-select:none;
+  h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 12px;
+    color: var(--fg);
   }
-  .switch{ width:36px; height:20px; border-radius:20px; background:var(--border); position:relative; transition:background .2s; flex-shrink:0; }
-  .switch::after{content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:var(--surface); transition:transform .2s; box-shadow:0 1px 2px rgba(0,0,0,.25);}
-  .heat-toggle[aria-pressed="true"] .switch{ background:var(--warm);}
-  .heat-toggle[aria-pressed="true"] .switch::after{ transform:translateX(16px); }
-
-  .mapbox{ padding:10px; }
-  svg#map{ width:100%; height:auto; display:block; }
-  .poi{ cursor:pointer; }
-  .poi circle.halo{ fill:var(--surface); opacity:.9; }
-  .poi:hover circle.ring, .poi.selected circle.ring{ stroke:var(--accent); stroke-width:2.5; }
-  .poi text.label{ font-family:'Inter',sans-serif; font-size:7.5px; font-weight:600; fill:var(--muted); }
-  .hotspot{ fill:var(--warm); opacity:.55; transition:opacity .3s; }
-  body.heat-on .hotspot{ opacity:.95; }
-  .routeline{ stroke:var(--accent-2); stroke-width:2.2; stroke-dasharray:1 7; stroke-linecap:round; fill:none; opacity:.6; }
-  body.heat-on .routeline{ stroke:var(--warm); stroke-dasharray:none; opacity:.9; }
-
-  .legend{ display:flex; flex-wrap:wrap; gap:10px 16px; padding:12px 16px; border-top:1px solid var(--border); background:var(--surface-2); }
-  .legend .item{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted); font-weight:600; }
-  .legend .sw{ width:12px; height:12px; border-radius:50%; flex-shrink:0; }
-
-  .side-panel{ display:flex; flex-direction:column; gap:14px; }
-  .card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; }
-  .card .label{ font-size:10.5px; text-transform:uppercase; letter-spacing:1px; color:var(--accent-2); font-weight:700; margin-bottom:6px;}
-  .card h3{ font-size:17px; margin-bottom:4px; }
-  .card p{ margin:0; font-size:13px; color:var(--muted); line-height:1.5; }
-  .pill-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
-  .pill{ font-size:10.5px; font-weight:700; background:var(--chip); color:var(--accent); padding:4px 9px; border-radius:20px; }
-
-  .a11y body, body.a11y{ font-size:112.5%; }
-  body.a11y .card p, body.a11y .intro p{ font-size:16px; line-height:1.65; }
-  body.a11y .poi text.label{ font-size:9.5px; }
-  body.a11y button.ctrl{ font-size:14px; padding:10px 16px; }
-  body.high-contrast{ --border:var(--fg); }
-  body.high-contrast .card, body.high-contrast .panel{ border-width:2px; }
-
-  footer{ border-top:1px solid var(--border); padding-block:16px 28px; margin-top:28px; }
-  footer p{ font-size:11.5px; color:var(--muted); margin:0; line-height:1.6; }
-
-  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .tagline {
+    font-size: 17px;
+    color: var(--muted);
+    margin: 0 0 32px;
+    max-width: 56ch;
+  }
+  section { margin-bottom: 36px; }
+  h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  p { margin: 0 0 14px; color: var(--fg); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .module-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .module-title { font-size: 19px; font-weight: 700; color: var(--fg); }
+  .module-desc { color: var(--muted); font-size: 14.5px; margin: 0; }
+  .btn {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 6px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .btn:hover { opacity: 0.9; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .tag {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  a { color: var(--accent); }
 </style>
-
+</head>
+<body>
 <header>
-  <div class="header-inner">
-    <div class="brandblock">
-      <div class="logo">S</div>
-      <div class="brandtext">
-        <div class="eyebrow">ENVGEOWISE · Schillerkiez</div>
-        <h1>Schattenwege</h1>
-      </div>
-    </div>
-    <div class="controls">
-      <button class="ctrl" id="a11yBtn" type="button" aria-pressed="false">Aa Barrierefreier Modus</button>
-      <button class="ctrl" id="contrastBtn" type="button" aria-pressed="false">◐ Hoher Kontrast</button>
-    </div>
-  </div>
+  <div class="logo">E</div>
+  <div class="name">ENVGEOWISE</div>
 </header>
 
 <main>
-  <div class="wrap">
-    <div class="intro">
-      <div class="eyebrow">Konzeptprototyp</div>
-      <h2>Kühle Wege durch die Schillerpromenade</h2>
-      <p>Dieser Prototyp zeigt, wie die in der Untersuchung kartierten Bäume, Sitzbänke, Klimaparks und die Kühlinsel direkt nutzbar werden. Auf einen Punkt klicken zeigt Details, der Hitzewellen-Modus zeigt, wie Schattenwege bei großer Hitze von den kühlsten Stationen entlang des Wegs führt.</p>
+  <h1>Geodaten für eine klimaangepasste Stadt</h1>
+  <p class="tagline">ENVGEOWISE verbindet amtliche Geodaten, eigene Felduntersuchungen und offene Werkzeuge wie QGIS und Python, um konkrete Klimaanpassungsmaßnahmen für Stadtquartiere sichtbar und nutzbar zu machen.</p>
+
+  <section>
+    <h2>Der Hintergrund</h2>
+    <p>Hitzewellen treffen dicht bebaute, stark versiegelte Stadtquartiere besonders hart — und innerhalb dieser Quartiere besonders ältere Menschen, Menschen mit Behinderung und Schwangere. ENVGEOWISE entsteht aus einer universitär betreuten Untersuchung des Schillerkiez in Berlin-Neukölln: 303 Gebäude, 702 Straßen und 143 Flächennutzungen wurden analysiert, 73 Hitze-Hotspots identifiziert und konkrete Maßnahmen kartiert, von Straßenbäumen über Klimaparks bis zu begrünten Dächern und Fassaden.</p>
+  </section>
+
+  <section>
+    <h2>Module</h2>
+    <div class="card module-card">
+      <div class="module-title">Schattenwege</div>
+      <p class="module-desc">Eine App und Web-Anwendung, die die kartierten kühlen Orte des Schillerkiez während Hitzewellen nutzbar macht: Straßenbäume, Klimaparks, Sitzgelegenheiten und Kühlinseln auf dem Weg, barrierefrei gestaltet für alle, vor allem aber für ältere Menschen, Menschen mit Behinderung und Schwangere.</p>
+      <div class="tags">
+        <span class="tag">Barrierefreiheit</span>
+        <span class="tag">Hitzeschutz</span>
+        <span class="tag">Kiez-genaue Daten</span>
+      </div>
+      <a class="btn" href="app/">Schattenwege öffnen →</a>
     </div>
+  </section>
 
-    <div class="app-grid">
-      <section class="panel map-panel" aria-label="Interaktive Karte der Schillerpromenade">
-        <div class="map-head">
-          <h3>Schillerpromenade &amp; Herrfurthplatz</h3>
-          <div class="heat-toggle" id="heatToggle" role="switch" aria-pressed="false" tabindex="0">
-            <span class="switch" aria-hidden="true"></span>
-            <span>Hitzewellen-Modus</span>
-          </div>
-        </div>
-        <div class="mapbox">
-          <svg id="map" viewBox="0 0 640 400" role="img" aria-labelledby="mapTitle">
-            <title id="mapTitle">Schematische Karte der Schillerpromenade mit kühlen Orten und Hitze-Hotspots</title>
-
-            <!-- street corridor -->
-            <rect x="60" y="150" width="520" height="100" rx="6" fill="var(--surface-2)"/>
-            <rect x="60" y="188" width="520" height="24" fill="var(--border)" opacity="0.7"/>
-
-            <!-- building blocks top -->
-            <g fill="var(--chip)" stroke="var(--border)">
-              <rect x="40" y="40" width="110" height="95" rx="4"/>
-              <rect x="170" y="40" width="90" height="95" rx="4"/>
-              <rect x="420" y="40" width="90" height="95" rx="4"/>
-              <rect x="530" y="40" width="80" height="95" rx="4"/>
-            </g>
-            <!-- building blocks bottom -->
-            <g fill="var(--chip)" stroke="var(--border)">
-              <rect x="40" y="270" width="100" height="95" rx="4"/>
-              <rect x="400" y="270" width="100" height="95" rx="4"/>
-              <rect x="520" y="270" width="90" height="95" rx="4"/>
-            </g>
-
-            <!-- Herrfurthplatz green oval -->
-            <ellipse cx="320" cy="200" rx="60" ry="95" fill="var(--accent-2)" opacity="0.28"/>
-            <ellipse cx="320" cy="200" rx="60" ry="95" fill="none" stroke="var(--accent-2)" stroke-dasharray="3 4" opacity="0.6"/>
-            <text x="320" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" fill="var(--accent)">Herrfurthplatz</text>
-
-            <!-- route line -->
-            <path class="routeline" d="M 90 200 L 180 200 L 250 200 L 390 200 L 460 200 L 560 200"/>
-
-            <!-- hotspots -->
-            <circle class="hotspot" cx="210" cy="188" r="7"/>
-            <circle class="hotspot" cx="340" cy="212" r="7"/>
-            <circle class="hotspot" cx="475" cy="188" r="7"/>
-
-            <!-- POIs -->
-            <g class="poi" tabindex="0" data-name="Zuhause" data-type="Start" data-info="Ausgangspunkt des Beispielwegs." data-dist="">
-              <circle class="halo" cx="90" cy="200" r="14"/>
-              <circle class="ring" cx="90" cy="200" r="11" fill="var(--fg)" stroke="var(--fg)" stroke-width="1.5"/>
-              <text x="90" y="223" text-anchor="middle" class="label">Zuhause</text>
-            </g>
-
-            <g class="poi" tabindex="0" data-name="Straßenbaum" data-type="Schatten" data-info="Beidseitige Straßenbaumreihe, ca. 15 m Abstand. Spendet durchgehend Schatten." data-dist="60 m">
-              <circle class="halo" cx="160" cy="175" r="13"/>
-              <circle class="ring" cx="160" cy="175" r="10" fill="#4c7a3e" stroke="#4c7a3e" stroke-width="1.5"/>
-              <text x="160" y="196" text-anchor="middle" class="label">Baum</text>
-            </g>
-
-            <g class="poi" tabindex="0" data-name="Sitzbank im Grünen" data-type="Ruhepunkt" data-info="Sitzgelegenheit mit Baumschatten, geeignet für eine kurze Pause." data-dist="140 m">
-              <circle class="halo" cx="230" cy="225" r="13"/>
-              <circle class="ring" cx="230" cy="225" r="10" fill="#8a9a4e" stroke="#8a9a4e" stroke-width="1.5"/>
-              <text x="230" y="246" text-anchor="middle" class="label">Bank</text>
-            </g>
-
-            <g class="poi" tabindex="0" data-name="Herrfurthplatz Urban Forest" data-type="Klimapark" data-info="Dichte Baumbestände, deutlich kühler als die Umgebung, großzügige Sitzflächen im Schatten." data-dist="260 m">
-              <circle class="halo" cx="320" cy="150" r="15"/>
-              <circle class="ring" cx="320" cy="150" r="12" fill="#2d4a2a" stroke="#2d4a2a" stroke-width="1.5"/>
-              <text x="320" y="130" text-anchor="middle" class="label">Klimapark</text>
-            </g>
-
-            <g class="poi" tabindex="0" data-name="Kühlinsel" data-type="Wasserfläche" data-info="Wasserfläche mit hoher Verdunstung, kühlt die Umgebung im Radius von rund 500 m." data-dist="310 m">
-              <circle class="halo" cx="320" cy="255" r="15"/>
-              <circle class="ring" cx="320" cy="255" r="12" fill="#3e7a9e" stroke="#3e7a9e" stroke-width="1.5"/>
-              <text x="320" y="278" text-anchor="middle" class="label">Kühlinsel</text>
-            </g>
-
-            <g class="poi" tabindex="0" data-name="Straßenbaum" data-type="Schatten" data-info="Zweite Baumreihe vor der Apotheke, dicht gepflanzt." data-dist="430 m">
-              <circle class="halo" cx="430" cy="178" r="13"/>
-              <circle class="ring" cx="430" cy="178" r="10" fill="#4c7a3e" stroke="#4c7a3e" stroke-width="1.5"/>
-              <text x="430" y="199" text-anchor="middle" class="label">Baum</text>
-            </g>
-
-            <g class="poi" tabindex="0" data-name="Apotheke" data-type="Ziel" data-info="Beispielziel: Apotheke an der Schillerpromenade." data-dist="500 m">
-              <circle class="halo" cx="560" cy="200" r="14"/>
-              <circle class="ring" cx="560" cy="200" r="11" fill="var(--warm)" stroke="var(--warm)" stroke-width="1.5"/>
-              <text x="560" y="223" text-anchor="middle" class="label">Apotheke</text>
-            </g>
-          </svg>
-        </div>
-        <div class="legend">
-          <div class="item"><span class="sw" style="background:#4c7a3e"></span>Straßenbaum</div>
-          <div class="item"><span class="sw" style="background:#8a9a4e"></span>Sitzbank</div>
-          <div class="item"><span class="sw" style="background:#2d4a2a"></span>Klimapark</div>
-          <div class="item"><span class="sw" style="background:#3e7a9e"></span>Kühlinsel</div>
-          <div class="item"><span class="sw" style="background:var(--warm)"></span>Hitze-Hotspot</div>
-        </div>
-      </section>
-
-      <aside class="side-panel">
-        <div class="card" id="detailCard">
-          <div class="label">Ausgewählter Punkt</div>
-          <h3 id="detailName">Nächster kühler Ort</h3>
-          <p id="detailInfo">Tippen oder klicken Sie auf einen Punkt der Karte, um Details zu sehen, zum Beispiel einen Straßenbaum, eine Sitzbank oder den Klimapark am Herrfurthplatz.</p>
-          <div class="pill-row" id="detailPills"></div>
-        </div>
-
-        <div class="card">
-          <div class="label">Barrierefreiheit</div>
-          <h3 style="font-size:15px;">Von Anfang an mitgedacht</h3>
-          <p>Große Schrift, hoher Kontrast und deutliche Markierungen sind über die Schalter oben jederzeit aktivierbar, für ältere Menschen, Menschen mit Behinderung und Schwangere ebenso wie für alle anderen.</p>
-        </div>
-
-        <div class="card">
-          <div class="label">Grundlage</div>
-          <h3 style="font-size:15px;">Reale Felddaten</h3>
-          <p>Alle gezeigten Stationen beruhen auf der georeferenzierten Kartierung aus der zugehörigen Untersuchung zum Schillerkiez: 73 Hitze-Hotspots, 1 434 Straßenbäume, 21 Urban-Forest-Flächen, 9 Klimaparks und eine Kühlinsel.</p>
-        </div>
-      </aside>
-    </div>
-  </div>
+  <section>
+    <h2>Über das Projekt</h2>
+    <p>ENVGEOWISE wird im Rahmen eines Masterstudiums an der TU Berlin (Ingenieurgeologie) und begleitend an der Berliner Hochschule für Technik (Landschafts- und Umweltplanung) entwickelt. Die zugrundeliegende Schillerkiez-Untersuchung wurde mit amtlichen ALKIS-Daten, OpenStreetMap, Python und QGIS erstellt.</p>
+  </section>
 </main>
 
 <footer>
-  <div class="wrap">
-    <p>Schattenwege ist ein Konzeptprototyp im Rahmen der Plattform ENVGEOWISE, entwickelt von Ruth Tchami auf Grundlage einer universitär betreuten Forschungsarbeit zum Schillerkiez, Berlin-Neukölln. Eingereicht beim Tilia Award 2026 / 2027, Kategorie Pflanzen &amp; Innovation, 1.1 Akademische Arbeiten &amp; Forschung.</p>
-  </div>
+  ENVGEOWISE · Ruth Tchami · 2026
 </footer>
-
-<script>
-(function(){
-  "use strict";
-  var body = document.body;
-
-  function setPressed(el, v){ el.setAttribute('aria-pressed', v ? 'true':'false'); }
-
-  // Accessibility toggle
-  var a11yBtn = document.getElementById('a11yBtn');
-  var a11yOn = false;
-  try { a11yOn = localStorage.getItem('sw_a11y') === '1'; } catch(e){}
-  function applyA11y(){ body.classList.toggle('a11y', a11yOn); setPressed(a11yBtn, a11yOn); }
-  applyA11y();
-  a11yBtn.addEventListener('click', function(){
-    a11yOn = !a11yOn; applyA11y();
-    try { localStorage.setItem('sw_a11y', a11yOn ? '1':'0'); } catch(e){}
-  });
-
-  // Contrast toggle
-  var contrastBtn = document.getElementById('contrastBtn');
-  var hcOn = false;
-  try { hcOn = localStorage.getItem('sw_hc') === '1'; } catch(e){}
-  function applyHc(){ body.classList.toggle('high-contrast', hcOn); setPressed(contrastBtn, hcOn); }
-  applyHc();
-  contrastBtn.addEventListener('click', function(){
-    hcOn = !hcOn; applyHc();
-    try { localStorage.setItem('sw_hc', hcOn ? '1':'0'); } catch(e){}
-  });
-
-  // Heat mode toggle
-  var heatToggle = document.getElementById('heatToggle');
-  var heatOn = false;
-  function applyHeat(){
-    body.classList.toggle('heat-on', heatOn);
-    heatToggle.setAttribute('aria-pressed', heatOn ? 'true':'false');
-    if(heatOn){ renderDetail('Hitzewellen-Modus aktiv', 'Die Route folgt jetzt den kühlsten Stationen: Straßenbäumen, dem Klimapark am Herrfurthplatz und der Kühlinsel. Hitze-Hotspots sind rot markiert.', ['Empfehlung','Herrfurthplatz aufsuchen']); }
-    else { renderDetail('Nächster kühler Ort', 'Tippen oder klicken Sie auf einen Punkt der Karte, um Details zu sehen, zum Beispiel einen Straßenbaum, eine Sitzbank oder den Klimapark am Herrfurthplatz.', []); }
-  }
-  heatToggle.addEventListener('click', function(){ heatOn = !heatOn; applyHeat(); });
-  heatToggle.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); heatOn = !heatOn; applyHeat(); } });
-
-  // POI interaction
-  var pois = document.querySelectorAll('.poi');
-  function renderDetail(name, info, pills){
-    document.getElementById('detailName').textContent = name;
-    document.getElementById('detailInfo').textContent = info;
-    var row = document.getElementById('detailPills');
-    row.innerHTML = '';
-    pills.forEach(function(p){
-      var span = document.createElement('span');
-      span.className='pill'; span.textContent = p; row.appendChild(span);
-    });
-  }
-  pois.forEach(function(poi){
-    function select(){
-      pois.forEach(function(p){ p.classList.remove('selected'); });
-      poi.classList.add('selected');
-      var name = poi.getAttribute('data-name');
-      var type = poi.getAttribute('data-type');
-      var info = poi.getAttribute('data-info');
-      var dist = poi.getAttribute('data-dist');
-      var pills = [type];
-      if(dist) pills.push(dist + ' entfernt');
-      renderDetail(name, info, pills);
-    }
-    poi.addEventListener('click', select);
-    poi.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(); } });
-  });
-})();
-</script>
+</body>
+</html>
